@@ -412,9 +412,10 @@ impl<T, A: AllocRef> RawVec<T, A> {
         // Nothing we can really do about these checks, sadly.
         let required_cap = len.checked_add(additional).ok_or(CapacityOverflow)?;
 
-        // This guarantees exponential growth. The doubling cannot overflow
-        // because `cap <= isize::MAX` and the type of `cap` is `usize`.
-        let cap = cmp::max(self.cap * 2, required_cap);
+        // Exponential growth unless isize::MAX is enough. The doubling cannot
+        // overflow because `cap <= isize::MAX` and the type of `cap` is usize.
+        let cap = cmp::min(self.cap * 2, isize::MAX as usize);
+        let cap = cmp::max(cap, required_cap);
 
         // Tiny Vecs are dumb. Skip to:
         // - 8 if the element size is 1, because any heap allocators is likely
