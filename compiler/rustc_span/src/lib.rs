@@ -1452,8 +1452,7 @@ impl SourceFile {
         // is recorded.
         let diff = match self.normalized_pos.binary_search_by(|np| np.pos.cmp(&pos)) {
             Ok(i) => self.normalized_pos[i].diff,
-            Err(i) if i == 0 => 0,
-            Err(i) => self.normalized_pos[i - 1].diff,
+            Err(i) => self.normalized_pos[ i.saturating_sub(1) ].diff,
         };
 
         BytePos::from_u32(pos.0 - self.start_pos.0 + diff)
