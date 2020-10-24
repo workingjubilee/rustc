@@ -30,7 +30,7 @@ pub type DoubleDouble = DoubleFloat<ieee::Double>;
 // FIXME: Implement all operations in DoubleDouble, and delete these
 // semantics.
 // FIXME(eddyb) This shouldn't need to be `pub`, it's only used in bounds.
-pub struct FallbackS<F>(F);
+pub(crate) struct FallbackS<F>(F);
 type Fallback<F> = ieee::IeeeFloat<FallbackS<F>>;
 impl<F: Float> ieee::Semantics for FallbackS<F> {
     // Forbid any conversion to/from bits.
