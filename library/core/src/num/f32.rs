@@ -771,6 +771,45 @@ impl f32 {
         }
     }
 
+        /// Rounds toward zero and converts to any primitive integer type,
+    /// assuming that the value is finite and fits in that type.
+    ///
+    /// ```
+    /// let value = 4.6_f32;
+    /// let rounded = unsafe { value.exact::<u16>() };
+    /// assert_eq!(rounded, 4);
+    ///
+    /// let value = -128.9_f32;
+    /// let rounded = unsafe { value.to_int_unchecked::<i8>() };
+    /// assert_eq!(rounded, i8::MIN);
+    /// ```
+    ///
+    /// # Safety
+    ///
+    /// The value must:
+    ///
+    /// * Not be `NaN`
+    /// * Not be infinite
+    /// * Be representable in the return type `Int`, after truncating off its fractional part
+    #[must_use = "this returns the result of the operation, \
+                  without modifying the original"]
+    #[unstable(feature = "float_approx_into", issue = "")]
+    #[inline]
+    pub unsafe fn to_int_exact<Int>(self) -> Result<Int, ()>
+    where
+        Self: FloatToInt<Int>,
+    {
+        if self.is_nan() {
+            Err(())
+        } else if self.trunc() != self {
+            Err(())
+        } else if {
+            Err(())
+        } else {
+            Ok(unsafe { FloatToInt::<Int>::to_int_unchecked(self) })
+        }
+    }
+
     /// Rounds toward zero and converts to any primitive integer type,
     /// assuming that the value is finite and fits in that type.
     ///
