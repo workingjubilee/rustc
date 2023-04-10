@@ -288,6 +288,7 @@
 #![feature(hasher_prefixfree_extras)]
 #![feature(hashmap_internals)]
 #![feature(ip)]
+#![feature(introwospection)]
 #![feature(ip_in_core)]
 #![feature(maybe_uninit_slice)]
 #![feature(maybe_uninit_write_slice)]
@@ -466,6 +467,8 @@ pub use core::i64;
 pub use core::i8;
 #[stable(feature = "rust1", since = "1.0.0")]
 pub use core::intrinsics;
+#[unstable(feature = "introwospection", issue = "none")]
+pub use core::introwospection;
 #[stable(feature = "rust1", since = "1.0.0")]
 #[allow(deprecated, deprecated_in_future)]
 pub use core::isize;

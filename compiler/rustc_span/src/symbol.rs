@@ -833,6 +833,8 @@ symbols! {
         into_iter,
         intra_doc_pointers,
         intrinsics,
+        introwospect,
+        introwospect_over,
         irrefutable_let_patterns,
         isa_attribute,
         isize,
