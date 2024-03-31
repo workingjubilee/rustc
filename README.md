@@ -1,5 +1,5 @@
-<section align="center">
-  
+<section align="center" style="text-align:right;">
+
   ![The Rust Programming Language: A language empowering everyone to build reliable and efficient software](https://www.rust-lang.org/static/images/rust-social-wide.jpg)
 
   [Website] | [Getting started] | [Learn] | [Documentation] | [Contributing]
@@ -15,10 +15,10 @@ standard library, and documentation.
 
 
 [Website]: https://www.rust-lang.org
-[Getting started]: "https://www.rust-lang.org/learn/get-started"
+[Getting started]: https://www.rust-lang.org/learn/get-started
 [Learn]: https://www.rust-lang.org/learn
-[Documentation]: "https://www.rust-lang.org/learn#learn-use"
-[Contributing]: "CONTRIBUTING.md"
+[Documentation]: https://www.rust-lang.org/learn#learn-use
+[Contributing]: CONTRIBUTING.md
 
 ## Why Rust?
 
