@@ -1,17 +1,23 @@
-<p align="center">
+<section align="center">
   <img alt="The Rust Programming Language: A language empowering everyone to build reliable and efficient software" src="https://www.rust-lang.org/static/images/rust-social-wide.jpg" width="512" height="256">
-  <br>
-  <a href="https://www.rust-lang.org/">Website</a> |
-  <a href="https://www.rust-lang.org/learn/get-started">Getting started</a> |
-  <a href="https://www.rust-lang.org/learn">Learn</a> |
-  <a href="https://www.rust-lang.org/learn#learn-use">Documentation</a> |
-  <a href="CONTRIBUTING.md">Contributing</a>
-</p>
+
+  [Website] | [Getting started] | [Learn] | [Documentation] | [Contributing]
+
+</section>
+
+
 
 This is the main source code repository for [Rust]. It contains the compiler,
 standard library, and documentation.
 
 [Rust]: https://www.rust-lang.org/
+
+
+[Website]: https://www.rust-lang.org
+[Getting started]: "https://www.rust-lang.org/learn/get-started"
+[Learn]: https://www.rust-lang.org/learn
+[Documentation]: "https://www.rust-lang.org/learn#learn-use"
+[Contributing]: "CONTRIBUTING.md"
 
 ## Why Rust?
 
