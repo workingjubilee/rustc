@@ -15,19 +15,11 @@ standard library, and documentation.
 
 ## Why Rust?
 
-### Performance
+- **Performance:** Fast and memory-efficient, suitable for critical services, embedded devices, and easily integrate with other languages.
 
-Rust is blazingly fast and memory-efficient: with no runtime or garbage collector, it can power performance-critical services, run on embedded devices, and easily integrate with other languages.
+- **Reliability:** Our rich type system and ownership model ensure memory and thread safety, reducing bugs at compile-time.
 
-### Reliability
-
-Rust’s rich type system and ownership model guarantee memory-safety and thread-safety — enabling you to eliminate many classes of bugs at compile-time.
-
-### Productivity
-
-Rust has great documentation, a friendly compiler with useful error messages, and top-notch tooling — an integrated package manager and build tool, smart multi-editor support with auto-completion and type inspections, an auto-formatter, and more.
-
------
+- **Productivity:** Comprehensive documentation, user-friendly compiler, and advanced tooling including package manager, build tool, auto-formatter, and editor support.
 
 ## Quick Start
 
