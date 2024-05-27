@@ -10,6 +10,7 @@ use std::io::{self, BufWriter};
 use std::path::{Path, PathBuf};
 use std::{env, mem, str};
 
+use rustc_errors::DiagCtxt;
 use rustc_hir::def_id::{CrateNum, LOCAL_CRATE};
 use rustc_metadata::find_native_static_library;
 use rustc_middle::bug;
@@ -176,7 +177,7 @@ pub trait Linker {
     fn link_staticlib_by_name(&mut self, name: &str, verbatim: bool, whole_archive: bool);
     fn link_staticlib_by_path(&mut self, path: &Path, whole_archive: bool);
     fn include_path(&mut self, path: &Path);
-    fn framework_path(&mut self, path: &Path);
+    fn framework_path(&mut self, path: &Path, dcx: &DiagCtxt);
     fn output_filename(&mut self, path: &Path);
     fn add_object(&mut self, path: &Path);
     fn gc_sections(&mut self, keep_metadata: bool);
@@ -511,7 +512,7 @@ impl<'a> Linker for GccLinker<'a> {
     fn include_path(&mut self, path: &Path) {
         self.cmd.arg("-L").arg(path);
     }
-    fn framework_path(&mut self, path: &Path) {
+    fn framework_path(&mut self, path: &Path, _dcx: &DiagCtxt) {
         self.cmd.arg("-F").arg(path);
     }
     fn output_filename(&mut self, path: &Path) {
@@ -882,8 +883,8 @@ impl<'a> Linker for MsvcLinker<'a> {
         self.cmd.arg(&arg);
     }
 
-    fn framework_path(&mut self, _path: &Path) {
-        bug!("frameworks are not supported on windows")
+    fn framework_path(&mut self, _path: &Path, dcx: &DiagCtxt) {
+        dcx.fatal("frameworks are not supported for Windows");
     }
 
     fn optimize(&mut self) {
@@ -1071,8 +1072,8 @@ impl<'a> Linker for EmLinker<'a> {
         // noop
     }
 
-    fn framework_path(&mut self, _path: &Path) {
-        bug!("frameworks are not supported on Emscripten")
+    fn framework_path(&mut self, _path: &Path, dcx: &DiagCtxt) {
+        dcx.fatal("frameworks are not supported for Emscripten");
     }
 
     fn gc_sections(&mut self, _keep_metadata: bool) {
@@ -1232,8 +1233,8 @@ impl<'a> Linker for WasmLd<'a> {
         self.cmd.arg("-L").arg(path);
     }
 
-    fn framework_path(&mut self, _path: &Path) {
-        panic!("frameworks not supported")
+    fn framework_path(&mut self, _path: &Path, dcx: &DiagCtxt) {
+        dcx.fatal("frameworks not supported");
     }
 
     fn output_filename(&mut self, path: &Path) {
@@ -1380,8 +1381,9 @@ impl<'a> Linker for L4Bender<'a> {
     fn include_path(&mut self, path: &Path) {
         self.cmd.arg("-L").arg(path);
     }
-    fn framework_path(&mut self, _: &Path) {
-        bug!("frameworks are not supported on L4Re");
+
+    fn framework_path(&mut self, _: &Path, dcx: &DiagCtxt) {
+        dcx.fatal("frameworks are not supported for L4Re");
     }
     fn output_filename(&mut self, path: &Path) {
         self.cmd.arg("-o").arg(path);
@@ -1563,8 +1565,8 @@ impl<'a> Linker for AixLinker<'a> {
         self.cmd.arg("-L").arg(path);
     }
 
-    fn framework_path(&mut self, _: &Path) {
-        bug!("frameworks are not supported on AIX");
+    fn framework_path(&mut self, _: &Path, dcx: &DiagCtxt) {
+        dcx.fatal("frameworks are not supported on AIX");
     }
 
     fn output_filename(&mut self, path: &Path) {
@@ -1776,8 +1778,8 @@ impl<'a> Linker for PtxLinker<'a> {
         self.cmd.arg("-o").arg(path);
     }
 
-    fn framework_path(&mut self, _path: &Path) {
-        panic!("frameworks not supported")
+    fn framework_path(&mut self, _path: &Path, dcx: &DiagCtxt) {
+        dcx.fatal("frameworks not supported");
     }
 
     fn full_relro(&mut self) {}
@@ -1859,8 +1861,8 @@ impl<'a> Linker for LlbcLinker<'a> {
         self.cmd.arg("-o").arg(path);
     }
 
-    fn framework_path(&mut self, _path: &Path) {
-        panic!("frameworks not supported")
+    fn framework_path(&mut self, _path: &Path, dcx: &DiagCtxt) {
+        dcx.fatal("frameworks not supported");
     }
 
     fn full_relro(&mut self) {}
@@ -1950,8 +1952,8 @@ impl<'a> Linker for BpfLinker<'a> {
         self.cmd.arg("-o").arg(path);
     }
 
-    fn framework_path(&mut self, _path: &Path) {
-        panic!("frameworks not supported")
+    fn framework_path(&mut self, _path: &Path, dcx: &DiagCtxt) {
+        dcx.fatal("frameworks not supported");
     }
 
     fn full_relro(&mut self) {}

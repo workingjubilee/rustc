@@ -2643,7 +2643,7 @@ fn add_local_native_libraries(
         // entirely up to outside forces to make sure that library can be found at runtime.
         for search_path in sess.target_filesearch(PathKind::All).search_paths() {
             match search_path.kind {
-                PathKind::Framework => cmd.framework_path(&search_path.dir),
+                PathKind::Framework => cmd.framework_path(&search_path.dir, sess.dcx()),
                 _ => cmd.include_path(&fix_windows_verbatim_for_gcc(&search_path.dir)),
             }
         }
