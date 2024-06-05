@@ -17,9 +17,6 @@ pub struct Environment {
     host_llvm_dir: Utf8PathBuf,
     /// List of test paths that should be skipped when testing the optimized artifacts.
     skipped_tests: Vec<String>,
-    /// Arguments passed to `rustc-perf --cargo-config <value>` when running benchmarks.
-    #[builder(default)]
-    benchmark_cargo_config: Vec<String>,
     /// Directory containing a pre-built rustc-perf checkout.
     #[builder(default)]
     prebuilt_rustc_perf: Option<Utf8PathBuf>,
@@ -96,10 +93,6 @@ impl Environment {
 
     pub fn skipped_tests(&self) -> &[String] {
         &self.skipped_tests
-    }
-
-    pub fn benchmark_cargo_config(&self) -> &[String] {
-        &self.benchmark_cargo_config
     }
 }
 
