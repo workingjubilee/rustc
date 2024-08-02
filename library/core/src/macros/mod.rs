@@ -1164,6 +1164,10 @@ pub(crate) mod builtin {
     )]
     #[rustc_builtin_macro]
     #[macro_export]
+    #[deprecated(
+        since = "CURRENT_RUSTC_VERSION",
+        note = "use macro_metavar_expr_concat instead, see https://github.com/rust-lang/rust/issues/124225"
+    )]
     macro_rules! concat_idents {
         ($($e:ident),+ $(,)?) => {{ /* compiler built-in */ }};
     }
