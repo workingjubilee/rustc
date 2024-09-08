@@ -24,6 +24,10 @@ runners:
     os: macos-14
     <<: *base-job
 
+  - &job-windows-4c
+    os: windows-2022
+    <<: *base-job
+
   - &job-windows-8c
     os: windows-2022-8core-32gb
     <<: *base-job
@@ -371,7 +375,7 @@ auto:
       HOST_TARGET: x86_64-pc-windows-msvc
       RUST_CONFIGURE_ARGS: --build=x86_64-pc-windows-msvc --enable-lld --save-toolstates=/tmp/toolstate/toolstates.json
       DEPLOY_TOOLSTATES_JSON: toolstates-windows.json
-    <<: *job-windows-8c
+    <<: *job-windows-4c
 
   # 32/64-bit MinGW builds.
   #
