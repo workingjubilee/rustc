@@ -1,7 +1,7 @@
 use rustc_abi::{HasDataLayout, TyAbiInterface};
 
 use super::{ArgAttribute, ArgAttributes, ArgExtension, CastTarget};
-use crate::abi::call::{ArgAbi, FnAbi, PassMode, Reg, Size, Uniform};
+use crate::callconv::{ArgAbi, FnAbi, PassMode, Reg, Size, Uniform};
 
 fn classify_ret<Ty>(ret: &mut ArgAbi<'_, Ty>) {
     if ret.layout.is_aggregate() && ret.layout.is_sized() {
