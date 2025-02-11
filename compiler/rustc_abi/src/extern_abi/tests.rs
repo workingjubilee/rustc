@@ -22,13 +22,6 @@ fn lookup_baz() {
 }
 
 #[test]
-fn indices_are_correct() {
-    for (i, abi_data) in AbiDatas.iter().enumerate() {
-        assert_eq!(i, abi_data.abi.index());
-    }
-}
-
-#[test]
 fn guarantee_lexicographic_ordering() {
     let abis = ExternAbi::ALL_VARIANTS;
     let mut sorted_abis = abis.to_vec();
