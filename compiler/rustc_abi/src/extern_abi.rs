@@ -340,10 +340,6 @@ impl Abi {
     pub fn data(self) -> &'static AbiData {
         &AbiDatas[self.index()]
     }
-
-    pub fn name(self) -> &'static str {
-        self.data().name
-    }
 }
 
 impl fmt::Display for ExternAbi {

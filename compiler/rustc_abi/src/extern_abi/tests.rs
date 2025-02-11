@@ -6,13 +6,13 @@ use super::*;
 #[test]
 fn lookup_Rust() {
     let abi = lookup("Rust");
-    assert!(abi.is_ok() && abi.unwrap().data().name == "Rust");
+    assert!(abi.is_ok() && abi.unwrap().as_str() == "Rust");
 }
 
 #[test]
 fn lookup_cdecl() {
     let abi = lookup("cdecl");
-    assert!(abi.is_ok() && abi.unwrap().data().name == "cdecl");
+    assert!(abi.is_ok() && abi.unwrap().as_str() == "cdecl");
 }
 
 #[test]

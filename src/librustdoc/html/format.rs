@@ -1720,7 +1720,7 @@ pub(crate) fn print_abi_with_space(abi: ExternAbi) -> impl Display {
         let quot = if f.alternate() { "\"" } else { "&quot;" };
         match abi {
             ExternAbi::Rust => Ok(()),
-            abi => write!(f, "extern {0}{1}{0} ", quot, abi.name()),
+            abi => write!(f, "extern {quot}{tok}{quot} ", tok = abi.as_str()),
         }
     })
 }
