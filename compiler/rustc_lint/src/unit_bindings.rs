@@ -24,8 +24,6 @@ declare_lint! {
     /// }
     /// ```
     ///
-    /// {{produces}}
-    ///
     /// ### Explanation
     ///
     /// Creating a local binding with the unit type `()` does not do much and can be a sign of a
