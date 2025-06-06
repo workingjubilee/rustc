@@ -114,45 +114,43 @@ fn require_c_abi_if_c_variadic(
     abi: ExternAbi,
     span: Span,
 ) {
-    const CONVENTIONS_UNSTABLE: &str =
-        "`C`, `cdecl`, `system`, `aapcs`, `win64`, `sysv64` or `efiapi`";
-    const CONVENTIONS_STABLE: &str = "`C` or `cdecl`";
-    const UNSTABLE_EXPLAIN: &str =
-        "using calling conventions other than `C` or `cdecl` for varargs functions is unstable";
+    const CONVENTIONS_STABLE: &[ExternAbi] = &[
+        ExternAbi::C { unwind: false },
+        ExternAbi::Cdecl { unwind: false },
+        ExternAbi::Aapcs { unwind: false },
+        ExternAbi::Win64 { unwind: false },
+        ExternAbi::SysV64 { unwind: false },
+        ExternAbi::EfiApi,
+    ];
 
     // ABIs which can stably use varargs
-    if !decl.c_variadic || matches!(abi, ExternAbi::C { .. } | ExternAbi::Cdecl { .. }) {
+    if !decl.c_variadic || abi.supports_varargs() {
         return;
     }
 
     // ABIs with feature-gated stability
-    let extended_abi_support = tcx.features().extended_varargs_abi_support();
     let extern_system_varargs = tcx.features().extern_system_varargs();
 
     // If the feature gate has been enabled, we can stop here
     if extern_system_varargs && let ExternAbi::System { .. } = abi {
         return;
     };
-    if extended_abi_support && abi.supports_varargs() {
-        return;
-    };
 
     // Looks like we need to pick an error to emit.
     // Is there any feature which we could have enabled to make this work?
+    let stable_varargs = CONVENTIONS_STABLE.into_iter().map(|abi| abi.to_string()).collect::<Vec<String>>();
+    let [prefix @ .., suffix] = &stable_varargs[..] else { unreachable!() };
     match abi {
         ExternAbi::System { .. } => {
-            feature_err(&tcx.sess, sym::extern_system_varargs, span, UNSTABLE_EXPLAIN)
-        }
-        abi if abi.supports_varargs() => {
-            feature_err(&tcx.sess, sym::extended_varargs_abi_support, span, UNSTABLE_EXPLAIN)
+            feature_err(&tcx.sess, sym::extern_system_varargs, span, format!("using calling conventions other than {} or {} is unstable", prefix.join(", "), suffix))
         }
         _ => tcx.dcx().create_err(errors::VariadicFunctionCompatibleConvention {
             span,
             conventions: if tcx.sess.opts.unstable_features.is_nightly_build() {
-                CONVENTIONS_UNSTABLE
+                stable_varargs.join(", ") + r#" or "system""#
             } else {
-                CONVENTIONS_STABLE
-            },
+               stable_varargs.join(", ")
+            }
         }),
     }
     .emit();
