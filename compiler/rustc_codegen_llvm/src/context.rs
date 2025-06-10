@@ -207,7 +207,7 @@ pub(crate) unsafe fn create_module<'ll>(
         }
     }
 
-    // Ensure the data-layout values hardcoded remain the defaults.
+    // Ensure our hardcoded data-layout values remain the defaults.
     {
         let tm = crate::back::write::create_informational_target_machine(tcx.sess, false);
         unsafe {
@@ -219,7 +219,12 @@ pub(crate) unsafe fn create_module<'ll>(
             str::from_utf8(unsafe { CStr::from_ptr(llvm_data_layout) }.to_bytes())
                 .expect("got a non-UTF8 data-layout from LLVM");
 
-        if target_data_layout != llvm_data_layout {
+        if tcx.sess.target.os == "aix" {
+            // we committed a travesty here
+            if target_data_layout == llvm_data_layout {
+                bug!("LLVM got fixed, please remove this exception in cg_llvm!");
+            }
+        } else if target_data_layout != llvm_data_layout {
             tcx.dcx().emit_err(crate::errors::MismatchedDataLayout {
                 rustc_target: sess.opts.target_triple.to_string().as_str(),
                 rustc_layout: target_data_layout.as_str(),
