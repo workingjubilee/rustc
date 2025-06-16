@@ -207,6 +207,11 @@ pub(crate) unsafe fn create_module<'ll>(
         }
     }
 
+    if sess.target.os == "aix" {
+        // See https://github.com/llvm/llvm-project/issues/133599
+        target_data_layout = target_data_layout.replace("-f64:32:64", "");
+    }
+
     // Ensure our hardcoded data-layout values remain the defaults.
     {
         let tm = crate::back::write::create_informational_target_machine(tcx.sess, false);
@@ -219,7 +224,7 @@ pub(crate) unsafe fn create_module<'ll>(
             str::from_utf8(unsafe { CStr::from_ptr(llvm_data_layout) }.to_bytes())
                 .expect("got a non-UTF8 data-layout from LLVM");
 
-        if tcx.sess.target.os == "aix" {
+        if target_data_layout != llvm_data_layout {
             // FIXME(workingjubilee): Currently skipping this logic for testing purposes
         } else if target_data_layout != llvm_data_layout {
             tcx.dcx().emit_err(crate::errors::MismatchedDataLayout {
