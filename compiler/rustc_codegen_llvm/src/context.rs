@@ -225,8 +225,6 @@ pub(crate) unsafe fn create_module<'ll>(
                 .expect("got a non-UTF8 data-layout from LLVM");
 
         if target_data_layout != llvm_data_layout {
-            // FIXME(workingjubilee): Currently skipping this logic for testing purposes
-        } else if target_data_layout != llvm_data_layout {
             tcx.dcx().emit_err(crate::errors::MismatchedDataLayout {
                 rustc_target: sess.opts.target_triple.to_string().as_str(),
                 rustc_layout: target_data_layout.as_str(),
