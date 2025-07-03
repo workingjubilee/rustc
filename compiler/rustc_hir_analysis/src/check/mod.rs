@@ -101,8 +101,7 @@ use self::region::region_scope_tree;
 use crate::{errors, require_c_abi_if_c_variadic};
 
 /// Adds query fn to the [Providers] vtable, see [`rustc_middle::query`]
-pub fn provide(providers: &mut Providers) {
-    wfcheck::provide(providers);
+pub(super) fn provide(providers: &mut Providers) {
     *providers = Providers {
         adt_destructor,
         adt_async_destructor,
