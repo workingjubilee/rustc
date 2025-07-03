@@ -61,6 +61,7 @@ mod type_of;
 
 ///////////////////////////////////////////////////////////////////////////
 
+/// Adds query fn to the [Providers] vtable, see [`rustc_middle::query`]
 pub(crate) fn provide(providers: &mut Providers) {
     resolve_bound_vars::provide(providers);
     *providers = Providers {
