@@ -9,9 +9,9 @@ struct Bools {
     d: bool,
 }
 
-#[link(name = "get_a")]
+#[link(name = "Bools_get_first_bool")]
 unsafe extern "C" {
-    safe fn get_a(bools: Bools) -> bool;
+    safe fn bools_get_first_bool(bools: Bools) -> bool;
 }
 
 pub fn broken(arr: &[i32]) -> i32 {
@@ -24,7 +24,7 @@ pub fn broken(arr: &[i32]) -> i32 {
         c: false,
         d: true,
     };
-    let ret = get_a(bools);
+    let ret = bools_get_first_bool(bools);
     arr[ret as usize]
 }
 
