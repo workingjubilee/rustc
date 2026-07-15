@@ -9,7 +9,7 @@ struct Bools {
     d: bool,
 }
 
-#[link(name = "bools_get_first_bool")]
+#[link(name = "rust_test_helpers")]
 unsafe extern "C" {
     safe fn bools_get_first_bool(bools: Bools) -> bool;
 }
