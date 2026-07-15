@@ -331,13 +331,6 @@ fn arg_attrs_for_rust_scalar<'tcx>(
 ) -> ArgAttributes {
     let mut attrs = ArgAttributes::new();
 
-    // Booleans are always a noundef i1 that needs to be zero-extended.
-    if scalar.is_bool() {
-        attrs.ext(ArgExtension::Zext);
-        attrs.set(ArgAttribute::NoUndef);
-        return attrs;
-    }
-
     if !scalar.is_uninit_valid() {
         attrs.set(ArgAttribute::NoUndef);
     }
