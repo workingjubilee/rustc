@@ -1,6 +1,7 @@
 // Helper functions used only in tests
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <stdarg.h>
@@ -454,4 +455,15 @@ uint16_t issue_97463_leak_uninit_data(uint32_t a, uint32_t b, uint32_t c) {
     data->c = c & 0xFFFF;
 
     return data->b; /* leak data */
+}
+
+typedef struct Bools {
+    bool a;
+    bool b;
+    bool c;
+    bool d;
+} Bools;
+
+bool bools_get_first_bool(struct Bools bools) {
+    return bools.a;
 }
